@@ -1,0 +1,167 @@
+/* ReportItem.vue - Scoped Styles */
+/* This stylesheet is designed for the ReportItem component in Vue.js.
+   It follows the same green, white, and yellow theme as the previous components (UserDashboard, ItemDetails, LoginPage, RegisterPage, MyItem),
+   with modern CSS practices for a clean, professional item reporting form. */
+/* Global/Root Variables for Theme Consistency (Same as Previous Components) */
+:root {
+  --primary-dark-green: #004d40; /* Dark green for backgrounds and accents */
+  --primary-light-green: #e8f5e8; /* Light green for sections */
+  --secondary-yellow: #ffeb3b; /* Yellow for highlights and badges */
+  --neutral-white: #ffffff; /* White for text and backgrounds */
+  --shadow-color: rgba(0, 77, 64, 0.2); /* Subtle shadow with green tint */
+  --border-radius: 8px; /* Consistent rounded corners */
+  --transition-speed: 0.3s ease; /* Smooth transitions */
+  --font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Modern sans-serif */
+}
+
+/* Overall Report Item Container */
+.report-item {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--primary-light-green) 0%, var(--neutral-white) 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Title */
+.report-item h1 {
+  color: var(--primary-dark-green);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Form */
+.report-item form {
+  background: var(--neutral-white);
+  border: 2px solid var(--primary-dark-green);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all var(--transition-speed);
+}
+
+.report-item form:hover {
+  box-shadow: 0 12px 24px var(--shadow-color);
+  border-color: var(--secondary-yellow);
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: var(--primary-dark-green);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid var(--primary-dark-green);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  color: var(--primary-dark-green);
+  background: var(--neutral-white);
+  transition: all var(--transition-speed);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--secondary-yellow);
+  box-shadow: 0 4px 8px rgba(255, 235, 59, 0.3);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(0, 77, 64, 0.6);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Submit Button */
+.report-item button[type="submit"] {
+  background: linear-gradient(135deg, var(--primary-dark-green) 0%, #00796b 100%);
+  color: var(--neutral-white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  align-self: center;
+}
+
+.report-item button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+  background: linear-gradient(135deg, #00796b 0%, var(--primary-dark-green) 100%);
+}
+
+.report-item button[type="submit"]:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .report-item {
+    padding: 1rem;
+  }
+
+  .report-item h1 {
+    font-size: 2rem;
+  }
+
+  .report-item form {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 0.9rem;
+  }
+
+  .report-item button[type="submit"] {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-item form {
+    padding: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+}

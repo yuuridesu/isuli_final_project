@@ -1,0 +1,183 @@
+/* ItemDetails.vue - Scoped Styles */
+/* Revised for a card-like layout: image centered at the top (slightly below), details centered below.
+   Maintains the green, white, and yellow theme with modern CSS practices. */
+
+/* Global/Root Variables for Theme Consistency */
+:root {
+  --primary-dark-green: #004d40;
+  --primary-light-green: #e8f5e8;
+  --secondary-yellow: #ffeb3b;
+  --neutral-white: #ffffff;
+  --shadow-color: rgba(0, 77, 64, 0.2);
+  --border-radius: 12px;
+  --transition-speed: 0.3s ease;
+  --font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Overall Container */
+.item-details {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--primary-light-green) 0%, var(--neutral-white) 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Item Details Card - Vertical layout like a card */
+.item-details > div:first-child {
+  background: var(--neutral-white);
+  border: 2px solid var(--primary-dark-green);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 20px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  transition: all var(--transition-speed);
+}
+
+.item-details > div:first-child:hover {
+  box-shadow: 0 15px 30px var(--shadow-color);
+  border-color: var(--secondary-yellow);
+  transform: translateY(-5px);
+}
+
+/* Item Image - Centered at top, slightly below */
+.item-details img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  transition: transform var(--transition-speed);
+  margin-top: 1rem; /* Adds a little space below the top */
+}
+
+.item-details img:hover {
+  transform: scale(1.05);
+}
+
+/* Details Section - Centered below the image */
+.item-details .details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Item Name */
+.item-details .item-name {
+  color: var(--primary-dark-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  border-bottom: 3px solid var(--secondary-yellow);
+  padding-bottom: 0.5rem;
+}
+
+/* Detail Rows */
+.item-details .detail-row {
+  width: 100%;
+  max-width: 500px; /* Keeps details readable, not too wide */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-details .detail-label {
+  color: var(--primary-dark-green);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.item-details .detail-value {
+  color: var(--primary-dark-green);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  background: var(--primary-light-green);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--secondary-yellow);
+  transition: background var(--transition-speed);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.item-details .detail-value:hover {
+  background: var(--secondary-yellow);
+}
+
+/* Loading State */
+.item-details-loading {
+  color: var(--primary-dark-green);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 2rem;
+  background: var(--neutral-white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .item-details {
+    padding: 1rem;
+  }
+
+  .item-details > div:first-child {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .item-details img {
+    max-width: 100%;
+  }
+
+  .item-details .item-name {
+    font-size: 1.75rem;
+  }
+
+  .item-details .detail-value {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-details > div:first-child {
+    padding: 1rem;
+  }
+
+  .item-details .item-name {
+    font-size: 1.5rem;
+  }
+
+  .item-details .detail-label {
+    font-size: 0.9rem;
+  }
+
+  .item-details .detail-value {
+    font-size: 0.95rem;
+  }
+}

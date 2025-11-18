@@ -1,0 +1,228 @@
+/* UserDashboard.vue - Scoped Styles */
+/* This stylesheet is designed for the UserDashboard component in Vue.js.
+   It incorporates a green, white, and yellow theme with modern CSS practices:
+   - Flexbox/Grid for layouts
+   - Subtle animations and transitions
+   - Responsive design (mobile-first approach)
+   - Consistent typography (using a clean sans-serif font stack)
+   - Rounded corners, shadows, and hover effects for interactivity */
+
+:root {
+  --primary-dark-green: #1cc88a; /* Updated: Changed to #1cc88a for consistency */
+  --primary-light-green: #e8f5e8; /* Light green for sections */
+  --secondary-yellow: #ffeb3b; /* Yellow for highlights and badges */
+  --neutral-white: #ffffff; /* White for text and backgrounds */
+  --shadow-color: rgba(28, 200, 138, 0.2); /* Updated: Subtle shadow with new green tint */
+  --border-radius: 8px; /* Consistent rounded corners */
+  --transition-speed: 0.3s ease; /* Smooth transitions */
+  --font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Modern sans-serif */
+}
+.page-title {
+  margin-top: 90px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Overall Dashboard Container */
+.user-dashboard {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--primary-light-green) 0%, var(--neutral-white) 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+/* Title Styling */
+.user-dashboard h1 {
+  color: var(--primary-dark-green);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Report Button */
+.report-btn {
+  background: linear-gradient(135deg, var(--primary-dark-green) 0%, #1cc88a 100%); /* Updated: Changed #00796b to #1cc88a */
+  color: var(--neutral-white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  align-self: flex-start;
+}
+
+.report-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+  background: linear-gradient(135deg, #1cc88a 0%, var(--primary-dark-green) 100%); /* Updated: Changed #00796b to #1cc88a */
+}
+
+.myItem-btn {
+  background: linear-gradient(135deg, var(--primary-dark-green) 0%, #1cc88a 100%); /* Updated: Changed #00796b to #1cc88a */
+  color: var(--neutral-white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  align-self: flex-start;
+}
+
+.myItem-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+  background: linear-gradient(135deg, #1cc88a 0%, var(--primary-dark-green) 100%); /* Updated: Changed #00796b to #1cc88a */
+}
+
+/* Search Bar (Assuming SearchBar component has a class like .search-bar) */
+.search-bar {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem;
+  border: 2px solid var(--primary-dark-green);
+  border-radius: var(--border-radius);
+  background: var(--neutral-white);
+  font-size: 1rem;
+  color: var(--primary-dark-green);
+  transition: border-color var(--transition-speed);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: var(--secondary-yellow);
+  box-shadow: 0 4px 8px rgba(255, 235, 59, 0.3);
+}
+
+/* Item Grid Layout */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+
+  /* ADD THESE */
+  justify-items: center;   /* Centers each ItemCard in its grid cell */
+  justify-content: center; /* Centers the whole grid block */
+}
+
+/* Item Card Enhancements (Building on Existing Styles) */
+.item-card {
+  background: var(--neutral-white);
+  border: 2px solid var(--primary-dark-green);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+  border-color: var(--secondary-yellow);
+}
+
+.item-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: calc(var(--border-radius) - 2px);
+  margin-bottom: 1rem;
+}
+
+.item-card h3 {
+  color: var(--primary-dark-green);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--primary-light-green);
+  border-radius: var(--border-radius);
+  width: 100%;
+  transition: background var(--transition-speed);
+}
+
+.item-card:hover h3 {
+  background: var(--secondary-yellow);
+  color: var(--primary-dark-green);
+}
+
+/* Optional Badge/Highlight for Items (e.g., if you add a status) */
+.item-card::before {
+  content: attr(data-status) ""; /* Assuming you add data-status to ItemCard for e.g., "Lost" or "Found" */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--secondary-yellow);
+  color: var(--primary-dark-green);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-dashboard {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .user-dashboard h1 {
+    font-size: 2rem;
+  }
+
+  .report-btn {
+    align-self: center;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .item-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .item-card img {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .item-card {
+    padding: 0.75rem;
+  }
+}

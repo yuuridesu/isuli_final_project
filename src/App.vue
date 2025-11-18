@@ -1,26 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div :style="{ paddingTop: showNavbar ? '80px' : '0' }">
+    <navbar v-if="showNavbar" />
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/navbar.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: { Navbar },
+  computed: {
+    showNavbar() {
+      // Show navbar only on user pages
+      return this.$route.path.startsWith('/user')
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/* You no longer need global padding here */
 </style>

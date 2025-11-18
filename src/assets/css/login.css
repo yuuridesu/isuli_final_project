@@ -1,0 +1,93 @@
+/* COLOR-ONLY UPDATE — LAYOUT UNTOUCHED */
+:root {
+  --primary-dark-green: #1cc88a;       /* replaced: green accent */
+  --primary-light-green: azure;        /* replaced: light background */
+  --secondary-yellow: #ffeb3b;
+  --neutral-white: #ffffff;
+  --shadow-color: rgba(255,255,255,0.3);
+  --border-radius: 8px;
+  --font-family: 'Roboto', Arial, sans-serif;
+}
+
+/* Login Background → Image-ready */
+.login-container {
+  /* background: url('YOUR_IMAGE_HERE.jpg') no-repeat center center; */
+  background-size: cover;
+  background-color: rgba(240, 255, 240, 0.9);  /* Updated: light greenish-white tint to keep it white but with a subtle green look and slight darkness */
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Title */
+.login-container h2 {
+  color: var(--primary-dark-green);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Form box */
+.login-form {
+  background: var(--neutral-white);
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0px 0px 1px 1px white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Labels */
+.form-group label {
+  color: gray;
+}
+
+/* Inputs */
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid gray;
+  border-radius: 30px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-dark-green);
+  box-shadow:  #1cc88a;    
+}
+
+/* Login button */
+.btn-login {
+  background-color: var(--primary-dark-green);
+  border-radius: 30px;
+  border: 1px solid gray;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Register button */
+.btn-register {
+  background-color: azure;
+  color: gray;
+  border: 1px solid gray;
+  border-radius: 30px;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Footer text */
+.register-section p {
+  color: gray;
+}
