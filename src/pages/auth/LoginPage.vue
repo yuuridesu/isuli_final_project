@@ -1,38 +1,52 @@
 <template>
   <div class="login-container">
-    <h2>Login</h2>
-
-    <form class="login-form" @submit.prevent="login">
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          v-model="user.email"
-          type="email"
-          placeholder="Enter your email"
-          required
-        />
+    <div class="login-card">
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to continue</p>
       </div>
 
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          v-model="user.password"
-          type="password"
-          placeholder="Enter your password"
-          required
-        />
+      <form class="login-form" @submit.prevent="login">
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input
+              v-model="user.email"
+              type="email"
+              placeholder="Email address"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input
+              v-model="user.password"
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <span>Sign In</span>
+        </button>
+      </form>
+
+      <div class="divider">
+        <span>or</span>
       </div>
 
-      <button type="submit" class="btn btn-login">Login</button>
-    </form>
-
-    <div class="register-section">
-      <p>Dont have an account yet?</p>
-      <button @click="goToRegister" class="btn btn-register">Register</button>
+      <div class="register-section">
+        <p>Don't have an account?</p>
+        <button @click="goToRegister" class="btn-register">
+          Create Account
+        </button>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import "@/assets/css/login.css";

@@ -8,9 +8,9 @@ import '@/assets/css/user_css/ItemDetails.css';
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-
-// axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
+// axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
+// axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
 // axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
 
 axios.defaults.headers['Content-Type'] = 'application/json';

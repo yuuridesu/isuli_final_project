@@ -1,7 +1,6 @@
 <template>
   <div class="admin-dashboard">
-    <navbarAdmin />
-
+    <!-- Page Title -->
     <h1 class="title">Admin Panel</h1>
 
     <!-- Overview Cards -->
@@ -10,81 +9,56 @@
         <h3>Total Users</h3>
         <p>{{ stats.users }}</p>
       </div>
-
       <div class="card">
         <h3>Total Items</h3>
         <p>{{ stats.items }}</p>
       </div>
-
       <div class="card">
         <h3>Total Lost Items</h3>
         <p>{{ stats.total_lost }}</p>
       </div>
-
       <div class="card">
         <h3>Total Found Items</h3>
         <p>{{ stats.total_found }}</p>
       </div>
-
       <div class="card">
         <h3>Pending Items</h3>
         <p>{{ stats.pending_items }}</p>
       </div>
-
       <div class="card">
         <h3>Approved Items</h3>
         <p>{{ stats.approved_items }}</p>
       </div>
-
       <div class="card">
         <h3>Claimed Items</h3>
         <p>{{ stats.claimed_items }}</p>
       </div>
-
       <div class="card">
         <h3>Archived Items</h3>
         <p>{{ stats.archived_items }}</p>
       </div>
-
-      <!-- <div class="card">
-        <h3>Total Categories</h3>
-        <p>{{ stats.categories }}</p>
-      </div>
-
-      <div class="card">
-        <h3>Total Logs</h3>
-        <p>{{ stats.logs }}</p>
-      </div> -->
     </div>
 
-    <!-- Recent Logs -->
-    <!-- <h2>Latest Activity</h2> -->
-    <!-- <ul class="log-list">
-      <li v-for="log in recentLogs" :key="log.id">
-        {{ log.action }} — {{ log.created_at }}
-      </li>
-    </ul> -->
-
+    <!-- Descriptive Bar Chart -->
     <div class="stats-chart">
+      <h3>Items Overview</h3>
       <ApexCharts
-        type="line"
+        type="bar"
         :options="chartOptions"
         :series="chartSeries"
-        width="400"
-      >
-      </ApexCharts>
+        height="350"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import navbarAdmin from "@/components/navbarAdmin.vue";
 import axios from "axios";
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
   name: "AdminDashboard",
-  components: { navbarAdmin, ApexCharts: VueApexCharts },
+  components: { ApexCharts: VueApexCharts },
 
   data() {
     return {
@@ -99,45 +73,41 @@ export default {
         archived_items: 0,
       },
 
-      // chartOptions:{
-      //   chart:{
-      //     type:'pie',
-      //   },
-
-      //   labels: ['Lost Items', 'Found Items'],
-      //    responsive: [{
-      //     breakpoint: 480,
-      //     options: {
-      //       chart: {
-      //         width: 300
-      //       },
-      //       legend: {
-      //         position: 'bottom'
-      //       }
-      //     }
-      //   }]
-      // },
-
       chartOptions: {
-        chart: { type: "line" },
-        xaxis: {
-          categories: ["Lost Items", "Found_Items"],
+        chart: {
+          type: "bar",
+          toolbar: { show: false },
         },
-
-        responsive: [
-          {
-            breakpoint: 480,
-            options: { chart: { width: 300 }, legend: { position: "bottom" } },
-          },
+        plotOptions: {
+          bar: { borderRadius: 8, horizontal: false },
+        },
+        dataLabels: { enabled: true },
+        xaxis: {
+          categories: [
+            "Lost Items",
+            "Found Items",
+            "Pending",
+            "Approved",
+            "Claimed",
+            "Archived",
+          ],
+        },
+        colors: [
+          "#1cc88a",
+          "#17a2b8",
+          "#f6c23e",
+          "#36b9cc",
+          "#e74a3b",
+          "#858796",
         ],
+        grid: { borderColor: "#e0e0e0" },
+        responsive: [{ breakpoint: 768, options: { chart: { height: 300 } } }],
       },
-
-      //  chartSeries: [], PIE
 
       chartSeries: [
         {
-          name: "Items",
-          data: [], // will be filled in mounted()
+          name: "Items Count",
+          data: [],
         },
       ],
     };
@@ -145,20 +115,26 @@ export default {
 
   mounted() {
     this.loadStats();
-    // this.loadRecentLogs()
   },
 
   methods: {
     async loadStats() {
       try {
         const response = await axios.get("/admin/dashboard");
-
         this.stats = response.data.stats;
-        //  this.chartSeries = [this.stats.total_lost, this.stats.total_found]; PIE
+
+        // Prepare series data for bar chart
         this.chartSeries = [
           {
-            name: "Items",
-            data: [this.stats.total_lost, this.stats.total_found],
+            name: "Items Count",
+            data: [
+              this.stats.total_lost,
+              this.stats.total_found,
+              this.stats.pending_items,
+              this.stats.approved_items,
+              this.stats.claimed_items,
+              this.stats.archived_items,
+            ],
           },
         ];
       } catch (error) {
@@ -166,76 +142,72 @@ export default {
         alert("Error fetching stats");
       }
     },
-
-    // async loadRecentLogs() {
-    //   const response = await axios.get('/api/admin/recent-logs')
-    //   this.recentLogs = response.data
-    // }
   },
 };
 </script>
 
 <style scoped>
-.stats-chart {
-  margin: 40px 0;
-  display: flex;
-  justify-content: center;
-}
-
 .admin-dashboard {
-  padding: 80px 40px;
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+  background: #f4f9f8;
+  min-height: 100vh;
 }
 
 .title {
-  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #1cc88a, #17a2b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
 }
 
-/* Cards */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  margin-bottom: 30px;
 }
 
 .card {
-  background: #f8f9fc;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(28, 200, 138, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
 }
 
-/* Buttons */
-.admin-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-  margin-bottom: 30px;
+.card h3 {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
-.btn {
-  background-color: #1cc88a;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+.card p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1cc88a;
 }
 
-.btn:hover {
-  background-color: #17a673;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(28, 200, 138, 0.15);
 }
 
-/* Logs */
-.log-list {
-  list-style: none;
-  padding: 0;
+.stats-chart {
+  margin: 50px 0;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(28, 200, 138, 0.05);
+  width: 100%;
+  max-width: 1000px;
 }
 
-.log-list li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+.stats-chart h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 </style>

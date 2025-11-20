@@ -222,7 +222,7 @@ ul li a {
     <ul :class="{ open: isOpen }">
       <li><router-link to="/user">Home</router-link></li>
       <li><router-link to="/user/reportItem">Report Item</router-link></li>
-      <li><router-link to="/user/myItem">My Items</router-link></li> 
+      <li><router-link to="/user/myItem">My Items</router-link></li>
       <li><router-link to="/user/myrequest">My Requests</router-link></li>
       <li><router-link to="/user/profile">Profile</router-link></li>
     </ul>
@@ -255,41 +255,49 @@ export default {
 
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
 
 .navbar {
   width: 100%;
   height: 70px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 18px;
   position: fixed;
   top: 0;
   z-index: 1000;
+  border-bottom: 2px solid #e9f9f1; /* Matches dashboard softly */
 }
 
+/* Left Logo */
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.25s ease;
 }
 
-.logo:hover { transform: scale(1.05); }
+.logo:hover {
+  transform: scale(1.04);
+}
 
 .logo i {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   color: #1cc88a;
 }
 
-.logo-text { display: flex; flex-direction: column; }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
 
 .brand {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: 800;
   background: linear-gradient(45deg, #1cc88a, #17a2b8);
   -webkit-background-clip: text;
@@ -297,39 +305,70 @@ export default {
 }
 
 .tagline {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.85rem;
+  color: #555;
   font-style: italic;
 }
 
+/* Desktop Menu */
 ul {
   display: flex;
   gap: 25px;
   list-style: none;
+  align-items: center;
 }
 
 ul li a {
   text-decoration: none;
   color: #333;
-  padding: 10px 14px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
   font-weight: 500;
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
 @media (min-width: 769px) {
   ul li a:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #e9f9f1;
+    color: #1cc88a;
   }
 
-
   ul li a.router-link-active {
-    background-color: #1cc88a;
+    background: #1cc88a;
     color: white;
+    box-shadow: 0 4px 10px rgba(28, 200, 138, 0.3);
   }
 }
 
+/* Right Side Bell */
+.nav-right {
+  position: relative;
+  cursor: pointer;
+}
 
+.nav-right .fa-bell {
+  font-size: 1.45rem;
+  color: #1cc88a;
+  transition: 0.25s;
+}
+
+.nav-right .fa-bell:hover {
+  transform: scale(1.08);
+}
+
+.nav-right .badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff5252;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  box-shadow: 0 2px 6px rgba(255, 82, 82, 0.4);
+}
+
+/* Hamburger Menu */
 .hamburger {
   display: none;
   width: 32px;
@@ -343,7 +382,7 @@ ul li a {
   width: 100%;
   height: 3px;
   background: #333;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: 0.3s ease;
 }
 
@@ -359,29 +398,36 @@ ul li a {
   transform: translateY(-10px) rotate(-45deg);
 }
 
+/* Mobile Menu */
 @media (max-width: 768px) {
-
   .hamburger {
     display: flex;
   }
 
   ul {
     position: absolute;
-    top: 78px;
+    top: 80px;
     right: 15px;
-    width: 200px;
-    background: white;
+    width: 230px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
     flex-direction: column;
-    border-radius: 12px;
-    padding: 10px 0;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    padding: 12px 0;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
     display: none;
-    animation: menuFade 0.25s ease forwards;
+    animation: fadeInMenu 0.25s ease forwards;
   }
 
-  @keyframes menuFade {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
+  @keyframes fadeInMenu {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   ul.open {
@@ -391,7 +437,7 @@ ul li a {
   ul li a {
     padding: 14px 20px;
     width: 100%;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid #eee;
   }
 
   ul li:last-child a {
@@ -399,35 +445,14 @@ ul li a {
   }
 
   ul li a:hover {
-    background: #f7f7f7;
+    background: #e9f9f1;
+    color: #1cc88a;
   }
 
   ul li a.router-link-active {
-    background: none !important;
-    color: #333 !important;
+    background: #1cc88a !important;
+    color: white !important;
   }
 }
-
-.nav-right {
-  position: relative;
-  cursor: pointer;
-}
-
-.nav-right .fa-bell {
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.nav-right .badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: red;
-  color: white;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  padding: 2px 5px;
-}
-
 </style>
 

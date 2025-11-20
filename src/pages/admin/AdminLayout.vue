@@ -1,26 +1,39 @@
 <template>
-  <div>
-    <navbar-admin /> <!-- always shows on admin pages -->
+  <div class="admin-layout">
+    <navbar-admin />
     <div class="admin-content">
-      <router-view /> <!-- nested admin page content -->
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import NavbarAdmin from '@/components/navbarAdmin.vue'
+import NavbarAdmin from "@/components/navbarAdmin.vue";
 
 export default {
-  name: 'AdminLayout',
-  components: { NavbarAdmin }
-}
+  name: "AdminLayout",
+  components: { NavbarAdmin },
+};
 </script>
 
-
 <style scoped>
+.admin-layout {
+  display: flex;
+}
+
 .admin-content {
-  padding-top: 20px;      /* optional top spacing */
-  padding-left: 270px;    /* offset for sidebar (250px width + 20px gap) */
-  padding-right: 20px;
+  flex: 1; /* takes remaining width */
+  min-height: 100vh;
+  padding: 40px;
+  padding-left: 280px; /* sidebar width + gap */
+  background: #f4f9f8;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    padding-left: 20px; /* collapse sidebar */
+    padding-top: 20px;
+  }
 }
 </style>

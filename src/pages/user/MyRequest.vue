@@ -2,34 +2,34 @@
   <navbar />
 
   <div class="requests-page">
-    <h2>My Item Requests</h2>
+    <h1>My Item Requests</h1>
 
     <div v-if="loading" class="loading">Loading your requests...</div>
 
     <div v-else>
       <div v-if="requests.length === 0" class="no-requests">
-        <p>You have not requested any items yet.</p>
+        <p>You haven’t requested any items yet.</p>
       </div>
 
-      <table v-else>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Message</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <div class="request-grid" v-else>
+        <div v-for="req in requests" :key="req.id" class="request-card">
+          <img
+            :src="`http://192.168.254.105:8000/storage/${req.item.image_path}`"
+            alt="Item Image"
+          />
 
-        <tbody>
-          <tr v-for="req in requests" :key="req.id">
-            <td>{{ req.item.item_name }}</td>
-            <td>{{ req.message || "—" }}</td>
-            <td>
-              <span :class="req.status.toLowerCase()">{{ req.status }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <h3>{{ req.item.item_name }}</h3>
+          <p>{{ req.message || "—" }}</p>
+          <p>
+            <strong>Status:</strong>
+            <span :class="req.status.toLowerCase()">{{ req.status }}</span>
+          </p>
+          <p><strong>Location:</strong> {{ req.item.location }}</p>
+          <p>
+            <strong>Date Reported:</strong> {{ req.item.date_reported_item }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@
 <script>
 import axios from "axios";
 import navbar from "@/components/navbar.vue";
+import "@/assets/css/user_css/MyRequest.css";
 
 export default {
   name: "MyRequest",
@@ -44,8 +45,8 @@ export default {
 
   data() {
     return {
-      requests: [], // FIXED variable
-      loading: true, // Added loading animation
+      requests: [],
+      loading: true,
     };
   },
 
@@ -56,12 +57,10 @@ export default {
   methods: {
     async fetchMyRequests() {
       try {
-        const res = await axios.get("/items/myrequest");
-
-        this.requests = res.data.data || [];
+        const response = await axios.get("/items/myrequest");
+        this.requests = response.data.data || [];
       } catch (error) {
-        console.error("Error fetching my requests:", error);
-
+        console.error("Error fetching my requests:", error.response || error);
         alert("Failed to load your requests.");
       } finally {
         this.loading = false;
@@ -71,21 +70,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.approved {
-  color: green;
-  font-weight: bold;
-}
-.rejected {
-  color: red;
-  font-weight: bold;
-}
-.pending {
-  color: orange;
-  font-weight: bold;
-}
-.loading {
-  font-size: 18px;
-  margin-top: 20px;
-}
-</style>
+

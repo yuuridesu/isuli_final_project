@@ -18,7 +18,7 @@
       <div class="item-grid">
         <div v-for="item in items" :key="item.id" class="item-card">
           <img
-            :src="`http://127.0.0.1:8000/storage/${item.image_path}`"
+            :src="`http://192.168.254.105:8000/storage/${item.image_path}`"
             alt="Item Image"
           />
 

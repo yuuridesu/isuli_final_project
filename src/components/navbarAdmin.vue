@@ -1,102 +1,110 @@
 <template>
   <nav class="navbar-admin">
+    <div class="logo" @click="$router.push('/admin')">
+      <i class="fas fa-shield-alt"></i>
+      <span class="brand">Admin Panel</span>
+    </div>
+
     <ul>
       <li><router-link to="/admin">Dashboard</router-link></li>
-      <li><router-link to="/admin/users">Users</router-link></li>
-      <li><router-link to="/admin/items">Items</router-link></li>
-      <li><router-link to="/admin/request">Item Requests</router-link></li>
-
-      <!-- <li><router-link to="/admin/reports">Reports</router-link></li> -->
+      <li><router-link to="/admin/users">Manage Users</router-link></li>
+      <li><router-link to="/admin/items"> Items</router-link></li>
       <li>
-        <!-- Removed .native -->
-        <router-link to="/login" @click="logout">Logout</router-link>
+        <router-link to="/admin/request">Item Requests</router-link>
       </li>
+      <li><router-link to="/login" @click="logout">Logout</router-link></li>
     </ul>
   </nav>
 </template>
 
 <script>
 export default {
-  name: 'navbarAdmin',
+  name: "NavbarAdmin",
   methods: {
     logout() {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-    }
-  }
-}
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    },
+  },
+};
 </script>
 
 <style scoped>
-
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
 
 .navbar-admin {
   position: fixed;
-  left: 0;
   top: 0;
-  height: 100vh; /* Full height */
-  width: 250px; /* Sidebar width */
-  background-color: #f8f9fa; /* Light background for modern look */
-  box-shadow: 2px 0 4px rgba(0,0,0,0.1); /* Subtle shadow */
-  padding: 20px 0; /* Vertical padding */
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 2px solid #e9f9f1;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  padding: 30px 15px;
+  font-family: "Inter", sans-serif;
   z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar-admin .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  cursor: pointer;
+  color: #1cc88a;
+}
+
+.navbar-admin .logo i {
+  font-size: 1.5rem;
 }
 
 .navbar-admin ul {
-  display: flex;
-  flex-direction: column; /* Vertical list */
-  gap: 15px; /* Spacing between items */
   list-style: none;
-  margin: 0;
-  padding: 0 20px; /* Horizontal padding */
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.navbar-admin a {
+.navbar-admin ul li a {
   text-decoration: none;
   color: #333;
-  font-weight: 600;
-  padding: 12px 16px; /* Larger padding for touch-friendly */
-  border-radius: 8px; /* Rounded corners for modern look */
-  transition: 0.3s ease; /* Smooth transition */
-  display: block; /* Full width */
-}
-
-.navbar-admin a:hover,
-.navbar-admin a.router-link-active {
-  background-color: #1cc88a;
-  color: white;
-  transform: translateX(5px); /* Slight slide effect on hover */
-}
-
-/* Optional: Add a header or logo space at the top */
-.navbar-admin::before {
-  content: "Admin Panel";
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 20px;
-  padding: 0 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  width: 100%;
   display: block;
+  transition: all 0.3s ease;
 }
 
-/* Responsive: On smaller screens, make it a top bar or hide, but for now, keep as is */
+.navbar-admin ul li a.router-link-active,
+.navbar-admin ul li a:hover {
+  background: linear-gradient(135deg, #1cc88a, #17a2b8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(28, 200, 138, 0.2);
+  transform: translateX(5px);
+}
+
 @media (max-width: 768px) {
   .navbar-admin {
-    width: 200px; /* Smaller sidebar for mobile */
+    width: 180px;
+    padding: 20px 10px;
   }
 
-  .admin-content {
-    padding-left: 200px !important;
+  .navbar-admin .logo {
+    font-size: 1rem;
   }
 
-  /* KEEP the menu visible */
-  .navbar-admin ul,
-  .navbar-admin::before {
-    display: block;
+  .navbar-admin ul li a {
+    padding: 10px 14px;
   }
 }
-
-
 </style>

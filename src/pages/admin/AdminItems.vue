@@ -1,17 +1,14 @@
 <template>
   <div class="admin-page">
-    <navbar-admin />
+    <h1 class="title">Reported Items</h1>
 
     <div class="admin-content">
-      <h2>Reported Items</h2>
-
-      <table class="item-table">
+      <table class="item-table" v-if="items.length">
         <thead>
           <tr>
             <th>ID</th>
             <th>Item Name</th>
             <th>Type</th>
-
             <th>Category</th>
             <th>Location</th>
             <th>Reported By</th>
@@ -22,20 +19,15 @@
         </thead>
 
         <tbody>
-          <tr v-for="item in items" :key="item">
+          <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-
             <td>{{ item.item_name }}</td>
-
             <td>{{ item.item_type }}</td>
             <td>{{ item.category_name }}</td>
             <td>{{ item.location }}</td>
             <td>{{ item.user.firstname }} {{ item.user.lastname }}</td>
-
             <td>{{ item.date_reported_item }}</td>
-
             <td>{{ item.status }}</td>
-
             <td>
               <button
                 v-if="item.status === 'Pending'"
@@ -51,28 +43,26 @@
               >
                 Reject
               </button>
-
               <span v-else>—</span>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <p v-else class="loading-text">Loading items...</p>
     </div>
   </div>
 </template>
 
 <script>
-import navbarAdmin from "@/components/navbarAdmin.vue";
 import axios from "axios";
 
 export default {
   name: "AdminItems",
-  components: { navbarAdmin },
 
   data() {
     return {
       items: [],
-      loading: false,
     };
   },
 
@@ -84,23 +74,18 @@ export default {
     async fetchItems() {
       try {
         const response = await axios.get("/admin/items");
-
         this.items = response.data.data;
       } catch (error) {
         console.error(error);
         alert("Error fetching items");
-      } finally {
-        this.loading = true;
       }
     },
 
     async approveItem(id) {
       try {
-        await axios.patch(`/admin/items/${id}/approve`, {});
-
+        await axios.patch(`/admin/items/${id}/approve`);
         const item = this.items.find((i) => i.id === id);
         if (item) item.status = "Approved";
-
         alert("Item approved successfully");
       } catch (error) {
         console.error(error);
@@ -110,11 +95,9 @@ export default {
 
     async rejectItem(id) {
       try {
-        await axios.patch(`/admin/items/${id}/reject`, {});
-
+        await axios.patch(`/admin/items/${id}/reject`);
         const item = this.items.find((i) => i.id === id);
         if (item) item.status = "Rejected";
-
         alert("Item rejected successfully");
       } catch (error) {
         console.error(error);
@@ -125,26 +108,34 @@ export default {
 };
 </script>
 
-
 <style scoped>
-/* Wrapper */
-.admin-content h2 {
-  margin-bottom: 15px;
-  font-weight: 600;
+.admin-page {
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  background: #f4f9f8;
 }
 
-/* Table Styling */
+/* Page Title */
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #1cc88a, #17a2b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+/* Table */
 .item-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 10px;
   background: #ffffff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
 .item-table thead {
   background: #2c3e50;
   color: white;
@@ -157,7 +148,6 @@ export default {
   font-size: 14px;
 }
 
-/* Body */
 .item-table td {
   padding: 10px 15px;
   font-size: 14px;
@@ -193,7 +183,7 @@ export default {
   opacity: 0.9;
 }
 
-/* Center short columns */
+/* Center ID column */
 .item-table td:first-child,
 .item-table th:first-child {
   width: 60px;
@@ -204,5 +194,18 @@ export default {
 .item-table td:nth-last-child(2) {
   font-weight: 600;
 }
-</style>
 
+/* Layout padding handled by AdminLayout */
+.admin-content {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Loading text */
+.loading-text {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+</style>

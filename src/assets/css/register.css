@@ -1,251 +1,156 @@
-/* RegisterPage.vue - Scoped Styles */
-/* Modern, neat stylesheet for the RegisterPage component in Vue.js.
-   Uses a green, white, and yellow theme with advanced CSS for a professional registration form. */
+/* SAME DESIGN AS LOGIN PAGE */
 
-/* CSS Custom Properties for Theme Consistency */
-:root {
-  --primary-dark-green: #004d40; /* Dark green for backgrounds and accents */
-  --primary-light-green: #e8f5e8; /* Light green for sections */
-  --secondary-yellow: #ffeb3b; /* Yellow for highlights and badges */
-  --neutral-white: #ffffff; /* White for text and backgrounds */
-  --shadow-color: rgba(0, 77, 64, 0.2); /* Subtle shadow with green tint */
-  --error-red: #d32f2f; /* Red for errors */
-  --border-radius: 12px; /* Modern rounded corners */
-  --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth, modern easing */
-  --font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Modern sans-serif */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Overall Register Container */
-.register-container {
-  font-family: var(--font-family);
-  background: linear-gradient(135deg, var(--primary-light-green) 0%, var(--neutral-white) 100%);
+.login-container {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  animation: fadeIn 0.8s ease-in-out; /* Modern fade-in animation */
+  justify-content: center;
+  padding: 20px;
+  background: #ffffff;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.login-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-/* Title */
-.register-container h2 {
-  color: var(--primary-dark-green);
-  font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive font size */
-  font-weight: 700;
-  margin-bottom: 2rem;
-  text-align: center;
-  text-shadow: 0 2px 4px var(--shadow-color);
-  letter-spacing: -0.5px; /* Modern typography */
-}
-
-/* Register Form - Glassmorphism Effect */
-.register-form {
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent for glass effect */
-  backdrop-filter: blur(10px); /* Modern blur filter */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  border: 1px solid rgba(0, 77, 64, 0.1);
-  border-radius: var(--border-radius);
-  padding: 2.5rem;
+.login-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 44px 36px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 8px 32px var(--shadow-color);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  animation: slideUp .6s cubic-bezier(.16,1,.3,1);
+  z-index: 1;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0891b2, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-header p {
+  font-size: 15px;
+  color: #64748b;
+}
+
+.login-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transition: all var(--transition-speed);
-  position: relative;
+  gap: 18px;
 }
 
-.register-form::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 235, 59, 0.1) 0%, rgba(0, 77, 64, 0.05) 100%);
-  border-radius: var(--border-radius);
-  z-index: -1;
-  transition: opacity var(--transition-speed);
-}
-
-.register-form:hover {
-  box-shadow: 0 12px 40px var(--shadow-color);
-  transform: translateY(-4px);
-}
-
-.register-form:hover::before {
-  opacity: 0.8;
-}
-
-/* Form Groups */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.form-group label {
-  color: var(--primary-dark-green);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-}
-
-.form-group input {
-  padding: 0.875rem 1rem;
-  border: 2px solid rgba(0, 77, 64, 0.3);
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  color: var(--primary-dark-green);
-  background: var(--neutral-white);
-  transition: all var(--transition-speed);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: var(--secondary-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 235, 59, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.02);
-}
-
-.form-group input::placeholder {
-  color: rgba(0, 77, 64, 0.6);
-  font-style: italic;
-}
-
-/* Buttons */
-.btn {
-  padding: 0.875rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: all var(--transition-speed);
-  box-shadow: 0 4px 12px var(--shadow-color);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.input-wrapper input {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left var(--transition-speed);
+  padding: 15px 18px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  font-size: 15px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+  transition: .3s;
 }
 
-.btn:hover::before {
-  left: 100%;
+.input-wrapper input::placeholder {
+  color: #cbd5e1;
 }
 
-.btn-register {
-  background: linear-gradient(135deg, var(--secondary-yellow) 0%, #fdd835 100%);
-  color: var(--primary-dark-green);
-}
-
-.btn-register:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 235, 59, 0.4);
+.input-wrapper input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
 }
 
 .btn-login {
-  background: linear-gradient(135deg, var(--primary-dark-green) 0%, #00796b 100%);
-  color: var(--neutral-white);
+  padding: 15px;
+  background: linear-gradient(135deg, #0891b2, #10b981);
+  border: none;
+  color: #fff;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
 }
 
 .btn-login:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px var(--shadow-color);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(16,185,129,0.3);
 }
 
-/* Login Section */
-.login-section {
-  margin-top: 2rem;
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 28px 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+  padding: 0 16px;
+}
+
+.register-section {
   text-align: center;
 }
 
-.login-section p {
-  color: var(--primary-dark-green);
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 500;
+.register-section p {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
-/* Error Message */
-.register-container p[style*="color: red"] {
-  color: var(--error-red) !important;
+.btn-register {
+  padding: 14px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  border-radius: 14px;
+  color: #0891b2;
+  cursor: pointer;
+  font-size: 15px;
   font-weight: 600;
-  text-align: center;
-  background: rgba(211, 47, 47, 0.1);
-  padding: 0.75rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--error-red);
-  animation: shake 0.5s ease-in-out; /* Error shake animation */
+  transition: .3s;
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+.btn-register:hover {
+  background: #f0fdfa;
+  border-color: #10b981;
+  color: #10b981;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .register-container {
-    padding: 1.5rem;
-  }
-
-  .register-container h2 {
-    margin-bottom: 1.5rem;
-  }
-
-  .register-form {
-    padding: 2rem;
-    max-width: 100%;
-  }
-
-  .form-group input {
-    padding: 0.75rem;
-    font-size: 0.95rem;
-  }
-
-  .btn {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .register-form {
-    padding: 1.5rem;
-  }
-
-  .login-section p {
-    font-size: 0.9rem;
-  }
-
-  .register-container p[style*="color: red"] {
-    font-size: 0.85rem;
-    padding: 0.5rem;
-  }
+.error-box {
+  margin-top: 20px;
+  padding: 12
 }
