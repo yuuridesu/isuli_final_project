@@ -1,6 +1,5 @@
 <template>
   <div class="admin-dashboard">
-
     <navbarAdmin />
 
     <h1 class="title">Admin Panel</h1>
@@ -18,33 +17,33 @@
       </div>
 
       <div class="card">
-        <h3> Total Lost Items </h3>
-        <p> {{ stats.total_lost }}</p>
+        <h3>Total Lost Items</h3>
+        <p>{{ stats.total_lost }}</p>
       </div>
 
       <div class="card">
-        <h3> Total Found Items </h3>
-        <p> {{ stats.total_found }}</p>
+        <h3>Total Found Items</h3>
+        <p>{{ stats.total_found }}</p>
       </div>
 
       <div class="card">
-        <h3> Pending Items </h3>
-        <p> {{ stats.pending_items }}</p>
+        <h3>Pending Items</h3>
+        <p>{{ stats.pending_items }}</p>
       </div>
 
       <div class="card">
-        <h3> Approved Items </h3>
-        <p> {{ stats.approved_items }}</p>
+        <h3>Approved Items</h3>
+        <p>{{ stats.approved_items }}</p>
       </div>
 
       <div class="card">
-      <h3>Claimed Items</h3>
-     <p>{{ stats.claimed_items }}</p>
-    </div>
+        <h3>Claimed Items</h3>
+        <p>{{ stats.claimed_items }}</p>
+      </div>
 
-    <div class="card">
-    <h3>Archived Items</h3>
-    <p>{{ stats.archived_items }}</p>
+      <div class="card">
+        <h3>Archived Items</h3>
+        <p>{{ stats.archived_items }}</p>
       </div>
 
       <!-- <div class="card">
@@ -67,32 +66,24 @@
     </ul> -->
 
     <div class="stats-chart">
-  <ApexCharts 
-    type="line" 
-    :options="chartOptions" 
-    :series="chartSeries"
-    width="400">
-  </ApexCharts>
-</div>
-
-
-    
-
+      <ApexCharts
+        type="line"
+        :options="chartOptions"
+        :series="chartSeries"
+        width="400"
+      >
+      </ApexCharts>
+    </div>
   </div>
-
-
 </template>
 
 <script>
-import navbarAdmin from '@/components/navbarAdmin.vue'
-import axios from 'axios'
-import VueApexCharts from 'vue3-apexcharts';
-// axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
+import navbarAdmin from "@/components/navbarAdmin.vue";
+import axios from "axios";
+import VueApexCharts from "vue3-apexcharts";
 
 export default {
-  name: 'AdminDashboard',
+  name: "AdminDashboard",
   components: { navbarAdmin, ApexCharts: VueApexCharts },
 
   data() {
@@ -102,9 +93,9 @@ export default {
         total_found: 0,
         users: 0,
         items: 0,
-        pending_items:0,
-        approved_items:0,
-          claimed_items: 0,
+        pending_items: 0,
+        approved_items: 0,
+        claimed_items: 0,
         archived_items: 0,
       },
 
@@ -127,72 +118,64 @@ export default {
       //   }]
       // },
 
-      chartOptions:{
-        chart: {type: 'line'},
+      chartOptions: {
+        chart: { type: "line" },
         xaxis: {
-          categories: ['Lost Items', 'Found_Items']
+          categories: ["Lost Items", "Found_Items"],
         },
 
-        responsive: [{
-          breakpoint: 480,
-          options: {chart: {width: 300}, legend: {position: 'bottom'}}
-        }]
-
+        responsive: [
+          {
+            breakpoint: 480,
+            options: { chart: { width: 300 }, legend: { position: "bottom" } },
+          },
+        ],
       },
 
       //  chartSeries: [], PIE
 
-          chartSeries: [ {
-    name: 'Items',
-    data: []  // will be filled in mounted()
-  }],
-
-    }
+      chartSeries: [
+        {
+          name: "Items",
+          data: [], // will be filled in mounted()
+        },
+      ],
+    };
   },
 
   mounted() {
-    this.loadStats()
+    this.loadStats();
     // this.loadRecentLogs()
   },
 
   methods: {
     async loadStats() {
-  try {
-    const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("/admin/dashboard");
 
-    const response = await axios.get(
-      '/admin/dashboard',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        this.stats = response.data.stats;
+        //  this.chartSeries = [this.stats.total_lost, this.stats.total_found]; PIE
+        this.chartSeries = [
+          {
+            name: "Items",
+            data: [this.stats.total_lost, this.stats.total_found],
+          },
+        ];
+      } catch (error) {
+        console.error(error);
+        alert("Error fetching stats");
       }
-    );
-
-    this.stats = response.data.stats;
-    //  this.chartSeries = [this.stats.total_lost, this.stats.total_found]; PIE
-    this.chartSeries = [
-     {
-    name: 'Items',
-    data: [this.stats.total_lost, this.stats.total_found]
-    }
-]  
-  } catch (error) {
-    console.error(error);
-    alert("Error fetching stats");
-  }
-}
+    },
 
     // async loadRecentLogs() {
     //   const response = await axios.get('/api/admin/recent-logs')
     //   this.recentLogs = response.data
     // }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-
 .stats-chart {
   margin: 40px 0;
   display: flex;
@@ -219,7 +202,7 @@ export default {
   background: #f8f9fc;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 

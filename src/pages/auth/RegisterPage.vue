@@ -49,9 +49,6 @@
 
 import axios from 'axios'
 import '@/assets/css/register.css'
-// axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
 
 export default {
 
@@ -77,23 +74,7 @@ export default {
             this.error = ''  // Clear previous error
 
             try{
-                const response = await axios.post('/register', this.form,{
-                    headers:{
-                        'Content-Type':'application/json'
-                    }
-                })
-
-                //   const response = await axios.post("http://127.0.0.1:8000/api/register", this.form,{
-                //     headers:{
-                //         'Content-Type':'application/json'
-                //     }
-                // })
-
-                //   const response = await axios.post("http://192.168.254.105:8000/api/register", this.form,{
-                //     headers:{
-                //         'Content-Type':'application/json'
-                //     }
-                // })
+                const response = await axios.post('/register', this.form)
 
                 if(response.status === 201 || response.status === 200){
                     alert('Registration successful! Please Log in.');

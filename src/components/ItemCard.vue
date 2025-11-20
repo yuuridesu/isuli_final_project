@@ -1,19 +1,34 @@
 <template>
   <div class="item-card" @click="$emit('click')">
-    <!-- <img 
-      :src="item.image_path ? `http://192.168.254.105:8000/storage/${item.image_path}` : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'" 
-      alt="Item Image" 
+    <!-- <img
+      :src="
+        item.image_path
+          ? `http://127.0.0.1:8000/storage/${item.image_path}`
+          : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
+      "
+      alt="Item Image"
     /> -->
 
-     <!-- <img 
-      :src="item.image_path ? `http://127.0.0.1:8000/storage/${item.image_path}` : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'" 
-      alt="Item Image" 
-    /> -->
-
-     <img 
-      :src="item.image_path ? `http://188.1.0.163:8000/storage/${item.image_path}` : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'" 
-      alt="Item Image" 
+    <img
+      :src="
+        item.image_path
+          ? `http://192.168.254.105:8000/storage/${item.image_path}`
+          : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
+      "
+      alt="Item Image"
     />
+
+    <!-- <img
+      :src="
+        item.image_path
+          ? `${axios.defaults.baseURL.replace('/api', '')}/storage/${
+              item.image_path
+            }`
+          : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
+      "
+      alt="Item Image"
+    /> -->
+
     <h3>{{ item.item_name }}</h3>
   </div>
 </template>
@@ -21,9 +36,9 @@
 <script>
 export default {
   props: {
-    item: Object
-  }
-}
+    item: Object,
+  },
+};
 </script>
 
 <style>
@@ -79,11 +94,11 @@ export default {
     gap: 0.75rem;
     max-width: 280px;
   }
-  
+
   .item-card img {
     height: 200px; /* Slightly smaller on tablets */
   }
-  
+
   .item-card h3 {
     font-size: 1.1rem;
   }

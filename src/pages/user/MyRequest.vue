@@ -23,7 +23,7 @@
         <tbody>
           <tr v-for="req in requests" :key="req.id">
             <td>{{ req.item.item_name }}</td>
-            <td>{{ req.message || '—' }}</td>
+            <td>{{ req.message || "—" }}</td>
             <td>
               <span :class="req.status.toLowerCase()">{{ req.status }}</span>
             </td>
@@ -35,14 +35,8 @@
 </template>
 
 <script>
-import axios from "axios"
-import navbar from "@/components/navbar.vue"
-
-// axios.defaults.baseURL = "http://192.168.254.105:8000/api"
-// axios.defaults.baseURL = "http://127.0.0.1:8000/api"
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
-
-
+import axios from "axios";
+import navbar from "@/components/navbar.vue";
 
 export default {
   name: "MyRequest",
@@ -50,37 +44,31 @@ export default {
 
   data() {
     return {
-      requests: [],   // FIXED variable
-      loading: true   // Added loading animation
-    }
+      requests: [], // FIXED variable
+      loading: true, // Added loading animation
+    };
   },
 
   async created() {
-    await this.fetchMyRequests()
+    await this.fetchMyRequests();
   },
 
   methods: {
     async fetchMyRequests() {
       try {
-        const token = localStorage.getItem("token")
+        const res = await axios.get("/items/myrequest");
 
-        const res = await axios.get('/items/myrequest', {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-
-        this.requests = res.data.data || []
-
+        this.requests = res.data.data || [];
       } catch (error) {
-        console.error("Error fetching my requests:", error)
+        console.error("Error fetching my requests:", error);
 
-        alert("Failed to load your requests.")
-
+        alert("Failed to load your requests.");
       } finally {
-        this.loading = false
+        this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

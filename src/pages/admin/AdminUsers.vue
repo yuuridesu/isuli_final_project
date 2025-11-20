@@ -4,29 +4,23 @@
 
     <div class="admin-content">
       <table class="user-table">
-
         <thead>
           <tr>
-            <th> ID </th>
-            <th> FirstName</th>
-            <th> LastName </th>
-            <th> Email </th>
+            <th>ID</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr v-for="user in users" :key=user.id>
-
-            <td> {{ user.id }}</td>
-            <td> {{ user.firstname }}</td>
-            <td> {{ user.lastname }}</td>
-            <td> {{ user.email }}</td>
-
-
-
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.firstname }}</td>
+            <td>{{ user.lastname }}</td>
+            <td>{{ user.email }}</td>
           </tr>
         </tbody>
-
       </table>
     </div>
   </div>
@@ -34,57 +28,40 @@
 
 
 <script>
-import navbarAdmin from '@/components/navbarAdmin.vue'
+import navbarAdmin from "@/components/navbarAdmin.vue";
 
-import axios from 'axios'
-
-// axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
+import axios from "axios";
 
 export default {
-  name: 'AdminUsers',
+  name: "AdminUsers",
   components: { navbarAdmin },
 
-  data(){
-    return{
-
+  data() {
+    return {
       users: [],
-      loading: false
-
-    }
+      loading: false,
+    };
   },
 
-  mounted(){
-    this.fetchUsers()
+  mounted() {
+    this.fetchUsers();
   },
 
   methods: {
-    async fetchUsers(){
+    async fetchUsers() {
+      try {
+        const response = await axios.get("/admin/users");
 
-      try{
-        const token = localStorage.getItem('token')
-        const response = await axios.get('/admin/users', {
-          headers: {Authorization: `Bearer ${token}`}
-        })
-
-        this.users = response.data.data
-
-      } catch(error){
-        console.error(error)
-        alert("error fetching items")
-      }
-
-      finally{
-        this.loading = true
+        this.users = response.data.data;
+      } catch (error) {
+        console.error(error);
+        alert("error fetching items");
+      } finally {
+        this.loading = true;
       }
     },
-
-
-
-  }
-
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -95,7 +72,7 @@ export default {
   background: #ffffff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Table Head */
@@ -136,5 +113,4 @@ export default {
   padding-left: 270px;
   padding-right: 20px;
 }
-
 </style>

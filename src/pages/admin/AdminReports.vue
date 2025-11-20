@@ -22,7 +22,6 @@
 
         <tbody>
           <tr v-for="report in reports" :key="report.id">
-
             <td>{{ report.id }}</td>
 
             <td>{{ report.item_name }}</td>
@@ -40,17 +39,17 @@
             <td>{{ report.status }}</td>
 
             <td>
-              <button 
-                v-if="report.status === 'pending'" 
-                class="btn-approve" 
+              <button
+                v-if="report.status === 'pending'"
+                class="btn-approve"
                 @click="approveReport(report.id)"
               >
                 Approve
               </button>
 
-              <button 
-                v-if="report.status === 'pending'" 
-                class="btn-reject" 
+              <button
+                v-if="report.status === 'pending'"
+                class="btn-reject"
                 @click="rejectReport(report.id)"
               >
                 Reject
@@ -58,10 +57,8 @@
 
               <span v-else>—</span>
             </td>
-
           </tr>
         </tbody>
-
       </table>
     </div>
   </div>
@@ -69,79 +66,60 @@
 
 
 <script>
-import navbarAdmin from '@/components/navbarAdmin.vue'
-import axios from 'axios'
-
-// axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
+import navbarAdmin from "@/components/navbarAdmin.vue";
+import axios from "axios";
 export default {
-  name: 'AdminReports',
+  name: "AdminReports",
   components: { navbarAdmin },
 
   data() {
     return {
       reports: [],
-      loading: false
-    }
+      loading: false,
+    };
   },
 
   mounted() {
-    this.fetchReports()
+    this.fetchReports();
   },
 
   methods: {
-
     async fetchReports() {
       try {
-        const token = localStorage.getItem('token')
-        const response = await axios.get('/admin/reports', {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const response = await axios.get("/admin/reports");
 
-        this.reports = response.data.data
-
+        this.reports = response.data.data;
       } catch (error) {
-        console.error(error)
-        alert("Error fetching reports")
+        console.error(error);
+        alert("Error fetching reports");
       } finally {
-        this.loading = true
+        this.loading = true;
       }
     },
 
     async approveReport(id) {
       try {
-        const token = localStorage.getItem('token')
+        await axios.patch(`/admin/reports/${id}/approve`, {});
 
-        await axios.patch(`/admin/reports/${id}/approve`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-
-        alert("Report approved successfully")
+        alert("Report approved successfully");
       } catch (error) {
-        console.error(error)
-        alert("Error approving report")
+        console.error(error);
+        alert("Error approving report");
       }
     },
 
     async rejectReport(id) {
       try {
-        const token = localStorage.getItem('token')
+        await axios.patch(`/admin/reports/${id}/reject`, {});
 
-        await axios.patch(`/admin/reports/${id}/reject`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-
-        alert("Report rejected successfully")
-
+        alert("Report rejected successfully");
       } catch (error) {
-        console.error(error)
-        alert("Error rejecting report")
+        console.error(error);
+        alert("Error rejecting report");
       }
-    }
-
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

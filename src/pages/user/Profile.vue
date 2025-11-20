@@ -1,82 +1,70 @@
 <template>
+  <div class="profile-page">
+    <navbar />
 
-    <div class="profile-page">
-
-            <navbar />
-
-        <div class="profile-container">
-        <div class="profile-card">
+    <div class="profile-container">
+      <div class="profile-card">
         <div class="avatar">
           <img :src="user.avatar || defaultAvatar" alt="User Avatar" />
         </div>
 
-        <h2> {{ user.firstname }} {{ user.lastname }} </h2>
-        <p> {{ user.student_id }} </p>
-        <p> {{ user.email }}</p>
+        <h2>{{ user.firstname }} {{ user.lastname }}</h2>
+        <p>{{ user.student_id }}</p>
+        <p>{{ user.email }}</p>
 
-
-          <!-- Logout button -->
+        <!-- Logout button -->
         <button class="logout-btn" @click="logout">Logout</button>
-
-
+      </div>
     </div>
-
-    </div>
-
-    </div>
-    
+  </div>
 </template>
 
 <script>
-
-import navbar from '@/components/navbar.vue'
-import axios from 'axios'
+import navbar from "@/components/navbar.vue";
+import axios from "axios";
 // axios.defaults.baseURL = 'http://192.168.254.105:8000/api'
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
-axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
+axios.defaults.baseURL = "http://127.0.0.1:8000/api";
+// axios.defaults.baseURL = 'http://188.1.0.163:8000/api'
 
-import defaultAvatar from '@/assets/images/avatar.jpeg'
+import defaultAvatar from "@/assets/images/pao.jpg";
 export default {
-    name: 'UserProfile',
-    components: {navbar},
+  name: "UserProfile",
+  components: { navbar },
 
-    data(){
-        return { 
-        user: {},
-         defaultAvatar
+  data() {
+    return {
+      user: {},
+      defaultAvatar,
+    };
+  },
 
-        }
+  created() {
+    this.fetchUsers();
+  },
+
+  methods: {
+    async fetchUsers() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        this.user = response.data.data;
+      } catch (error) {
+        console.error(error);
+
+        alert("error fetch user");
+      }
     },
 
-    created(){
-        this.fetchUsers()
-    },
-
-
-    methods:{
-        async fetchUsers(){
-            try{
-                const token = localStorage.getItem('token')
-                const response = await axios.get('user', {
-                    headers: {Authorization: `Bearer ${token}`}
-                })
-
-                this.user = response.data.data
-            } catch(error){
-                console.error(error)
-
-                alert("error fetch user")
-            }
-        },
-
-        logout() {
+    logout() {
       // Clear token and redirect to login page
-      localStorage.removeItem('token')
-      this.$router.push('/login') // or whatever your login route is
-    }
-    }
-
-}
+      localStorage.removeItem("token");
+      this.$router.push("/login"); // or whatever your login route is
+    },
+  },
+};
 </script>
 
 
@@ -97,7 +85,7 @@ export default {
   background: white;
   border-radius: 12px;
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -144,5 +132,4 @@ export default {
 .logout-btn:hover {
   background-color: #d32f2f;
 }
-
 </style>
