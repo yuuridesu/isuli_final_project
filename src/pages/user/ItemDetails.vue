@@ -3,17 +3,24 @@
 
   <div class="item-details" v-if="item">
     <div>
-      <img
+      <!-- <img
         :src="`http://192.168.254.105:8000/storage/${item.image_path}`"
         alt="Item Image"
-      />
+      /> -->
 
       <!-- <img :src="`http://188.1.0.163:8000/storage/${item.image_path}`" alt="Item Image" /> -->
-
-      <!-- <img
+      <!-- 
+      <img
         :src="`http://127.0.0.1:8000/storage/${item.image_path}`"
         alt="Item Image"
       /> -->
+      <img
+        :src="
+          item.image_path ||
+          'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
+        "
+        alt="Item Image"
+      />
 
       <div class="details">
         <h1 class="item-name">{{ item.item_name }}</h1>

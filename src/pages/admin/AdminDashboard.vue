@@ -1,40 +1,63 @@
 <template>
   <div class="admin-dashboard">
-    <!-- Page Title -->
     <h1 class="title">Admin Panel</h1>
 
     <!-- Overview Cards -->
     <div class="stats-grid">
-      <div class="card">
-        <h3>Total Users</h3>
+      <div class="card users">
+        <div class="card-header">
+          <i class="fas fa-users"></i>
+          <h3>Total Users</h3>
+        </div>
         <p>{{ stats.users }}</p>
       </div>
-      <div class="card">
-        <h3>Total Items</h3>
+      <div class="card items">
+        <div class="card-header">
+          <i class="fas fa-boxes"></i>
+          <h3>Total Items</h3>
+        </div>
         <p>{{ stats.items }}</p>
       </div>
-      <div class="card">
-        <h3>Total Lost Items</h3>
+      <div class="card lost">
+        <div class="card-header">
+          <i class="fas fa-search"></i>
+          <h3>Total Lost Items</h3>
+        </div>
         <p>{{ stats.total_lost }}</p>
       </div>
-      <div class="card">
-        <h3>Total Found Items</h3>
+      <div class="card found">
+        <div class="card-header">
+          <i class="fas fa-check-circle"></i>
+          <h3>Total Found Items</h3>
+        </div>
         <p>{{ stats.total_found }}</p>
       </div>
-      <div class="card">
-        <h3>Pending Items</h3>
+      <div class="card pending">
+        <div class="card-header">
+          <i class="fas fa-clock"></i>
+          <h3>Pending Items</h3>
+        </div>
         <p>{{ stats.pending_items }}</p>
       </div>
-      <div class="card">
-        <h3>Approved Items</h3>
+      <div class="card approved">
+        <div class="card-header">
+          <i class="fas fa-thumbs-up"></i>
+          <h3>Approved Items</h3>
+        </div>
         <p>{{ stats.approved_items }}</p>
       </div>
-      <div class="card">
-        <h3>Claimed Items</h3>
+      <div class="card claimed">
+        <div class="card-header">
+          <i class="fas fa-handshake"></i>
+          <h3>Claimed Items</h3>
+        </div>
         <p>{{ stats.claimed_items }}</p>
       </div>
-      <div class="card">
-        <h3>Archived Items</h3>
+      <div class="card archived">
+        <div class="card-header">
+          <i class="fas fa-archive"></i>
+          <h3>Archived Items</h3>
+        </div>
         <p>{{ stats.archived_items }}</p>
       </div>
     </div>
@@ -59,7 +82,6 @@ import VueApexCharts from "vue3-apexcharts";
 export default {
   name: "AdminDashboard",
   components: { ApexCharts: VueApexCharts },
-
   data() {
     return {
       stats: {
@@ -72,15 +94,9 @@ export default {
         claimed_items: 0,
         archived_items: 0,
       },
-
       chartOptions: {
-        chart: {
-          type: "bar",
-          toolbar: { show: false },
-        },
-        plotOptions: {
-          bar: { borderRadius: 8, horizontal: false },
-        },
+        chart: { type: "bar", toolbar: { show: false } },
+        plotOptions: { bar: { borderRadius: 8 } },
         dataLabels: { enabled: true },
         xaxis: {
           categories: [
@@ -103,27 +119,18 @@ export default {
         grid: { borderColor: "#e0e0e0" },
         responsive: [{ breakpoint: 768, options: { chart: { height: 300 } } }],
       },
-
-      chartSeries: [
-        {
-          name: "Items Count",
-          data: [],
-        },
-      ],
+      chartSeries: [{ name: "Items Count", data: [] }],
     };
   },
-
   mounted() {
     this.loadStats();
   },
-
   methods: {
     async loadStats() {
       try {
         const response = await axios.get("/admin/dashboard");
         this.stats = response.data.stats;
 
-        // Prepare series data for bar chart
         this.chartSeries = [
           {
             name: "Items Count",
@@ -139,7 +146,6 @@ export default {
         ];
       } catch (error) {
         console.error(error);
-        alert("Error fetching stats");
       }
     },
   },
@@ -153,7 +159,6 @@ export default {
   background: #f4f9f8;
   min-height: 100vh;
 }
-
 .title {
   font-size: 2rem;
   font-weight: 800;
@@ -162,50 +167,74 @@ export default {
   -webkit-text-fill-color: transparent;
   margin-bottom: 30px;
 }
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
-
 .card {
-  background: #ffffff;
   padding: 20px 25px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(28, 200, 138, 0.05);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
-.card h3 {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 10px;
-  font-weight: 600;
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
-
-.card p {
+.card-header i {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #1cc88a;
 }
-
+.card p {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+.card.users {
+  background: linear-gradient(135deg, #1cc88a, #17a2b8);
+}
+.card.items {
+  background: linear-gradient(135deg, #36b9cc, #4e73df);
+}
+.card.lost {
+  background: linear-gradient(135deg, #f6c23e, #f8b739);
+}
+.card.found {
+  background: linear-gradient(135deg, #e74a3b, #ff6b5c);
+}
+.card.pending {
+  background: linear-gradient(135deg, #f8f9fc, #d1d3e2);
+  color: #333;
+}
+.card.approved {
+  background: linear-gradient(135deg, #1cc88a, #38d9a9);
+}
+.card.claimed {
+  background: linear-gradient(135deg, #36b9cc, #4ea1df);
+}
+.card.archived {
+  background: linear-gradient(135deg, #858796, #a0a0b0);
+}
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(28, 200, 138, 0.15);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
-
 .stats-chart {
   margin: 50px 0;
-  background: #ffffff;
+  background: #fff;
   padding: 25px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(28, 200, 138, 0.05);
   width: 100%;
   max-width: 1000px;
 }
-
 .stats-chart h3 {
   margin-bottom: 15px;
   font-weight: 600;

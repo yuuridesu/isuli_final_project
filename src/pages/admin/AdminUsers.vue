@@ -3,27 +3,41 @@
     <h1 class="title">Manage Users</h1>
 
     <div class="admin-content">
-      <table class="user-table" v-if="users.length">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Email</th>
-          </tr>
-        </thead>
+      <!-- Search bar -->
+      <div class="search-bar">
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Search users..."
+        />
+        <!-- <i class="fas fa-search"></i> -->
+      </div>
 
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.firstname }}</td>
-            <td>{{ user.lastname }}</td>
-            <td>{{ user.email }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Table card wrapper -->
+      <div class="table-card" v-if="filteredUsers.length">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>FirstName</th>
+              <th>LastName</th>
+              <th>Student Id</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in filteredUsers" :key="user.id">
+              <td>{{ user.id }}</td>
+              <td>{{ user.firstname }}</td>
+              <td>{{ user.lastname }}</td>
+              <td>{{ user.student_id }}</td>
+              <td>{{ user.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <p v-else class="loading-text">Loading users...</p>
+      <p v-else class="loading-text">No users found.</p>
     </div>
   </div>
 </template>
@@ -33,17 +47,15 @@ import axios from "axios";
 
 export default {
   name: "AdminUsers",
-
   data() {
     return {
       users: [],
+      searchQuery: "", // for search functionality
     };
   },
-
   mounted() {
     this.fetchUsers();
   },
-
   methods: {
     async fetchUsers() {
       try {
@@ -55,6 +67,17 @@ export default {
       }
     },
   },
+  computed: {
+    // Filters users based on searchQuery
+    filteredUsers() {
+      return this.users.filter(
+        (u) =>
+          u.firstname.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          u.lastname.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          u.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+  },
 };
 </script>
 
@@ -63,9 +86,9 @@ export default {
   font-family: "Inter", sans-serif;
   min-height: 100vh;
   background: #f4f9f8;
+  padding: 20px;
 }
 
-/* Page Title */
 .title {
   font-size: 2rem;
   font-weight: 800;
@@ -75,50 +98,84 @@ export default {
   margin-bottom: 30px;
 }
 
+/* Search bar */
+.search-bar {
+  position: relative;
+  margin-bottom: 20px;
+  max-width: 400px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 35px 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #1cc88a;
+}
+
+.search-bar i {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+/* Table card wrapper */
+.table-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(28, 200, 138, 0.08);
+  overflow-x: auto;
+}
+
 /* Table */
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 .user-table thead {
-  background: #2c3e50;
+  background: #1cc88a;
   color: white;
+  text-transform: uppercase;
 }
 
-.user-table th {
+.user-table th,
+.user-table td {
   padding: 12px 15px;
   text-align: left;
-  font-weight: 600;
-  font-size: 14px;
 }
 
-.user-table td {
-  padding: 10px 15px;
-  font-size: 14px;
-  border-bottom: 1px solid #e6e6e6;
+/* Zebra striping for rows */
+.user-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
 }
 
+/* Hover effect */
 .user-table tbody tr:hover {
-  background: #f5f7fa;
+  background: #d1f2e0;
+  transition: background 0.3s ease;
 }
 
+/* First column alignment */
 .user-table td:first-child,
 .user-table th:first-child {
   width: 60px;
   text-align: center;
 }
 
-/* Layout padding handled by AdminLayout */
+/* Admin content padding */
 .admin-content {
-  padding-top: 20px;
-  padding-left: 20px; /* AdminLayout already offsets for sidebar */
-  padding-right: 20px;
+  padding-top: 10px;
 }
 
 /* Loading text */
@@ -126,5 +183,6 @@ export default {
   color: #666;
   font-size: 1rem;
   margin-top: 20px;
+  text-align: center;
 }
 </style>

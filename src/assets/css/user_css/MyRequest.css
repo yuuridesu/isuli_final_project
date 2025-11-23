@@ -1,153 +1,230 @@
-
-:root {
-  --green-main: #1cc88a;
-  --green-dark: #17a472;
-  --green-light: #e9f9f1;
-  --yellow-accent: #ffe96a;
-  --red-accent: #e84a5f;
-  --red-dark: #d63447;
-  --white: #ffffff;
-  --text-dark: #2e2e2e;
-  --text-muted: #6c757d;
-
-  --radius: 16px;
-  --radius-sm: 12px;
-  --shadow: 0 2px 8px rgba(28, 200, 138, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 8px 24px rgba(28, 200, 138, 0.15),
-    0 12px 32px rgba(0, 0, 0, 0.08);
-  --font: "Inter", sans-serif;
-  --transition: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Page layout */
+/* Requests Page (Matches My Items Theme) */
 .requests-page {
   min-height: 100vh;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(28, 200, 138, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 233, 106, 0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #ffffff 0%, #f8fefb 50%, var(--green-light) 100%);
   padding: 2rem;
   font-family: var(--font);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #f8fefb 50%,
-    var(--green-light) 100%
-  );
+  gap: 2.5rem;
 }
 
+/* Page Title */
 .requests-page h1 {
-  font-size: 2.5rem;
+  margin-top: 80px;
+  font-size: 2.8rem;
   font-weight: 800;
-  text-align: center;
   background: linear-gradient(135deg, var(--green-main), var(--green-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.5rem;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  text-align: center;
+  position: relative;
+  animation: fadeInDown 0.6s var(--transition);
 }
 
-/* Loading & No requests */
-.loading,
+.requests-page h1::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--yellow-accent), var(--green-main));
+  border-radius: 2px;
+}
+
+/* Loading Animation */
+.loading {
+  background: var(--white);
+  padding: 1.75rem 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(28, 200, 138, 0.15);
+  box-shadow: var(--shadow);
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.6s var(--transition), pulse 2s ease-in-out infinite;
+}
+
+.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green-main), var(--yellow-accent));
+}
+
+/* No Requests */
 .no-requests {
   background: var(--white);
-  padding: 2rem;
+  padding: 3rem 2.5rem;
   border-radius: var(--radius);
+  border: 1px solid rgba(28, 200, 138, 0.15);
   box-shadow: var(--shadow);
   text-align: center;
-  font-size: 1.2rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s var(--transition);
+  max-width: 500px;
+}
+
+.no-requests::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green-main), var(--yellow-accent));
 }
 
 .no-requests p {
   color: var(--text-dark);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
-/* Grid layout for requests */
+/* Requests Grid */
 .request-grid {
+  width: 100%;
+  max-width: 1280px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
-  width: 100%;
-  max-width: 1200px;
+  justify-items: center;
+  animation: fadeInUp 0.6s var(--transition) 0.2s backwards;
 }
 
-/* Request cards */
+/* Request Card */
 .request-card {
   background: var(--white);
   border-radius: var(--radius);
   border: 1px solid rgba(28, 200, 138, 0.15);
   box-shadow: var(--shadow);
   padding: 0;
+  width: 100%;
+  max-width: 320px;
+  transition: all 0.4s var(--transition);
+  overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: all 0.4s var(--transition);
-  position: relative;
 }
 
+/* Top Glow Bar */
+.request-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-main), var(--yellow-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--transition);
+  z-index: 1;
+}
+
+.request-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Hover Effects */
 .request-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
   border-color: var(--green-main);
 }
 
+/* Image */
 .request-card img {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
   transition: transform 0.5s var(--transition);
 }
 
 .request-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
+/* Title */
 .request-card h3 {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-dark);
+  background: linear-gradient(to bottom, var(--white), var(--green-light));
   padding: 1rem;
   margin: 0;
+  transition: all 0.3s var(--transition);
+  letter-spacing: 0.3px;
 }
 
+.request-card:hover h3 {
+  background: var(--yellow-accent);
+}
+
+/* Description Text */
 .request-card p {
   font-size: 0.95rem;
   color: var(--text-muted);
-  margin: 0.25rem 1rem 0.75rem;
+  margin: 0.5rem 1rem;
+  line-height: 1.5;
 }
 
-.request-card .approved {
-  color: green;
-  font-weight: bold;
+/* Status Badges (Clean Tailwind Colors) */
+.approved {
+  color: #22c55e;
+  font-weight: 700;
 }
 
-.request-card .pending {
-  color: orange;
-  font-weight: bold;
+.pending {
+  color: #eab308;
+  font-weight: 700;
 }
 
-.request-card .rejected {
-  color: red;
-  font-weight: bold;
+.rejected {
+  color: #ef4444;
+  font-weight: 700;
 }
 
-/* Responsive */
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (max-width: 768px) {
-  .request-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.5rem;
-  }
+  .requests-page h1 { font-size: 2.2rem; margin-top: 60px; }
+  .request-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
 }
 
 @media (max-width: 480px) {
-  .requests-page {
-    padding: 1.5rem;
-  }
-
-  .requests-page h1 {
-    font-size: 2rem;
-  }
-
-  .request-card img {
-    height: 150px;
-  }
+  .requests-page { padding: 1.5rem; }
+  .requests-page h1 { font-size: 1.9rem; }
+  .request-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .request-card { max-width: 100%; }
 }

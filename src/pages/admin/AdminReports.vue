@@ -3,6 +3,13 @@
     <navbar-admin />
 
     <div class="admin-content">
+      <div class="search-bar">
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Search Reports..."
+        />
+      </div>
       <h2>Reported Items</h2>
 
       <table class="report-table">

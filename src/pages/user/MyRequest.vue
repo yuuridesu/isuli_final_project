@@ -1,7 +1,6 @@
 <template>
-  <navbar />
-
   <div class="requests-page">
+    <navbar />
     <h1>My Item Requests</h1>
 
     <div v-if="loading" class="loading">Loading your requests...</div>
@@ -37,7 +36,6 @@
 <script>
 import axios from "axios";
 import navbar from "@/components/navbar.vue";
-import "@/assets/css/user_css/MyRequest.css";
 
 export default {
   name: "MyRequest",
@@ -70,4 +68,6 @@ export default {
 };
 </script>
 
+<style scoped src="@/assets/css/user_css/MyRequest.css">
+</style>
 

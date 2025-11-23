@@ -77,9 +77,9 @@ import Notification from '@/pages/user/Notification.vue'
 import AdminDashboard from '../pages/admin/AdminDashboard.vue'
 import AdminUsers from '../pages/admin/AdminUsers.vue'
 import AdminItems from '../pages/admin/AdminItems.vue'
-import AdminReports from '../pages/admin/AdminReports.vue'
-import AdminRequest from '../pages/admin/AdminRequest.vue'
+import AdminRequest from '@/pages/admin/AdminRequest.vue'
 import AdminLayout from '@/pages/admin/AdminLayout.vue'
+import AuditLogs from '@/pages/admin/AuditLogs.vue'
 
 // ✅ Define routes
 const routes = [
@@ -104,8 +104,9 @@ const routes = [
       { path: '', name: 'AdminDashboard', component: AdminDashboard },
       { path: 'users', name: 'AdminUsers', component: AdminUsers },
       { path: 'items', name: 'AdminItems', component: AdminItems },
-      { path: 'reports', name: 'AdminReports', component: AdminReports },
-      { path: 'request', name: 'AdminRequest', component: AdminRequest },
+      // { path: 'reports', name: 'AdminReports', component: AdminReports,,
+      {path: 'auditlogs', name: 'AuditLogs', component: AuditLogs},
+      {path: 'request', name: 'AdminRequest', component:AdminRequest},
     ]
   }
 ]

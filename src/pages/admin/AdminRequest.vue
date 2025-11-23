@@ -3,47 +3,61 @@
     <h1 class="title">Item Requests</h1>
 
     <div class="admin-content">
-      <table class="request-table" v-if="requests.length">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Item</th>
-            <th>Requested By</th>
-            <th>Contact</th>
-            <th>Message</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="req in requests" :key="req.id">
-            <td>{{ req.id }}</td>
-            <td>{{ req.item.item_name }}</td>
-            <td>{{ req.user.firstname }} {{ req.user.lastname }}</td>
-            <td>{{ req.phone_number }}</td>
-            <td>{{ req.message }}</td>
-            <td>{{ req.status }}</td>
-            <td>
-              <button
-                v-if="req.status && req.status.toLowerCase() === 'pending'"
-                class="btn-approve"
-                @click="approve(req.id)"
-              >
-                Approve
-              </button>
-              <button
-                v-if="req.status && req.status.toLowerCase() === 'pending'"
-                class="btn-reject"
-                @click="reject(req.id)"
-              >
-                Reject
-              </button>
-              <span v-else>—</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Table -->
+      <div class="table-card" v-if="requests.length">
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Item</th>
+              <th>Requested By</th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="req in requests" :key="req.id">
+              <td>{{ req.id }}</td>
+              <td>{{ req.item.item_name }}</td>
+              <td>{{ req.user.firstname }} {{ req.user.lastname }}</td>
+              <td>{{ req.phone_number || "-" }}</td>
+              <td>{{ req.message || "-" }}</td>
+              <td :class="statusClass(req.status)">{{ req.status }}</td>
+              <td>
+                <button
+                  v-if="req.status && req.status.toLowerCase() === 'pending'"
+                  class="btn-approve"
+                  @click="approve(req.id)"
+                >
+                  Approve
+                </button>
+                <button
+                  v-if="req.status && req.status.toLowerCase() === 'pending'"
+                  class="btn-reject"
+                  @click="reject(req.id)"
+                >
+                  Reject
+                </button>
+                <span v-else>—</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
+        <!-- Load More Button -->
+        <div class="load-more" v-if="nextPageUrl">
+          <button @click="loadRequests">Load More</button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <p v-else-if="requests.length === 0 && loaded" class="loading-text">
+        No requests found.
+      </p>
+
+      <!-- Initial Loading -->
       <p v-else class="loading-text">Loading requests...</p>
     </div>
   </div>
@@ -57,18 +71,29 @@ export default {
   data() {
     return {
       requests: [],
+      nextPageUrl: null,
+      loaded: false, // Track if API finished loading
     };
   },
-  async mounted() {
-    try {
-      const response = await axios.get("/admin/request");
-      this.requests = response.data.data;
-    } catch (error) {
-      console.error(error);
-      alert("Error fetching requests");
-    }
+  mounted() {
+    this.loadRequests();
   },
   methods: {
+    async loadRequests() {
+      try {
+        const url = this.nextPageUrl || "/admin/request";
+        const res = await axios.get(url);
+
+        // Merge new requests
+        this.requests = [...this.requests, ...res.data.data.data];
+        this.nextPageUrl = res.data.data.next_page_url;
+      } catch (error) {
+        console.error("Error loading requests:", error);
+      } finally {
+        this.loaded = true; // API finished
+      }
+    },
+
     async approve(id) {
       try {
         await axios.patch(`/admin/request/${id}/approve`);
@@ -81,6 +106,7 @@ export default {
         alert("Error approving request");
       }
     },
+
     async reject(id) {
       try {
         await axios.patch(`/admin/request/${id}/reject`);
@@ -93,18 +119,32 @@ export default {
         alert("Error rejecting request");
       }
     },
+
+    statusClass(status) {
+      switch ((status || "").toLowerCase()) {
+        case "pending":
+          return "status-pending";
+        case "approved":
+          return "status-approved";
+        case "rejected":
+          return "status-rejected";
+        default:
+          return "";
+      }
+    },
   },
 };
 </script>
+
 
 <style scoped>
 .admin-page {
   font-family: "Inter", sans-serif;
   min-height: 100vh;
   background: #f4f9f8;
+  padding: 20px;
 }
 
-/* Page Title */
 .title {
   font-size: 2rem;
   font-weight: 800;
@@ -114,40 +154,41 @@ export default {
   margin-bottom: 20px;
 }
 
-/* Table */
+.table-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(28, 200, 138, 0.08);
+  overflow-x: auto;
+}
+
 .request-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  background: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 .request-table thead {
-  background: #2c3e50;
+  background: #1cc88a;
   color: white;
+  text-transform: uppercase;
 }
 
-.request-table th {
+.request-table th,
+.request-table td {
   padding: 12px 15px;
   text-align: left;
-  font-size: 14px;
-  font-weight: 600;
 }
 
-.request-table td {
-  padding: 10px 15px;
-  font-size: 14px;
-  border-bottom: 1px solid #e6e6e6;
+.request-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
 }
 
 .request-table tbody tr:hover {
-  background: #f5f7fa;
+  background: #d1f2e0;
+  transition: background 0.3s ease;
 }
 
-/* Buttons */
 .btn-approve,
 .btn-reject {
   padding: 6px 12px;
@@ -157,39 +198,70 @@ export default {
   cursor: pointer;
   margin-right: 5px;
   color: white;
-}
-
-.btn-approve {
-  background-color: #27ae60;
-}
-
-.btn-reject {
-  background-color: #e74c3c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .btn-approve:hover,
 .btn-reject:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
 }
 
-/* Center ID column */
+.btn-approve {
+  background-color: #27ae60;
+}
+.btn-reject {
+  background-color: #e74c3c;
+}
+
+.status-pending {
+  color: #f6c23e;
+  font-weight: 600;
+}
+.status-approved {
+  color: #1cc88a;
+  font-weight: 600;
+}
+.status-rejected {
+  color: #e74a3b;
+  font-weight: 600;
+}
+
 .request-table td:first-child,
 .request-table th:first-child {
   width: 60px;
   text-align: center;
 }
 
-/* Layout padding handled by AdminLayout */
 .admin-content {
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 10px;
 }
 
-/* Loading text */
 .loading-text {
   color: #666;
   font-size: 1rem;
   margin-top: 20px;
+  text-align: center;
+}
+
+.load-more {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.load-more button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1cc88a;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.load-more button:hover {
+  background-color: #17a2b8;
 }
 </style>

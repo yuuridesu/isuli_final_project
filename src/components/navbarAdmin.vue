@@ -1,18 +1,49 @@
 <template>
   <nav class="navbar-admin">
+    <!-- Logo -->
     <div class="logo" @click="$router.push('/admin')">
       <i class="fas fa-shield-alt"></i>
       <span class="brand">Admin Panel</span>
     </div>
 
+    <!-- Menu -->
     <ul>
-      <li><router-link to="/admin">Dashboard</router-link></li>
-      <li><router-link to="/admin/users">Manage Users</router-link></li>
-      <li><router-link to="/admin/items"> Items</router-link></li>
       <li>
-        <router-link to="/admin/request">Item Requests</router-link>
+        <router-link to="/admin">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </router-link>
       </li>
-      <li><router-link to="/login" @click="logout">Logout</router-link></li>
+      <li>
+        <router-link to="/admin/users">
+          <i class="fas fa-users"></i>
+          <span>Manage Users</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/admin/items">
+          <i class="fas fa-box"></i>
+          <span>Reported Items</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/admin/request">
+          <i class="fas fa-envelope-open-text"></i>
+          <span>Item Requests</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/admin/auditlogs">
+          <i class="fas fa-envelope-open-text"></i>
+          <span>Audit Logs</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/login" @click="logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </router-link>
+      </li>
     </ul>
   </nav>
 </template>
@@ -58,11 +89,14 @@ export default {
   font-size: 1.2rem;
   margin-bottom: 40px;
   cursor: pointer;
-  color: #1cc88a;
+  background: linear-gradient(135deg, #1cc88a, #17a2b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .navbar-admin .logo i {
   font-size: 1.5rem;
+  color: #1cc88a;
 }
 
 .navbar-admin ul {
@@ -81,8 +115,16 @@ export default {
   border-radius: 12px;
   font-weight: 500;
   width: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   transition: all 0.3s ease;
+}
+
+.navbar-admin ul li a i {
+  width: 20px;
+  text-align: center;
+  color: #1cc88a;
 }
 
 .navbar-admin ul li a.router-link-active,
@@ -105,6 +147,7 @@ export default {
 
   .navbar-admin ul li a {
     padding: 10px 14px;
+    font-size: 14px;
   }
 }
 </style>
