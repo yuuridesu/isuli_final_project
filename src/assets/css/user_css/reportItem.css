@@ -220,6 +220,31 @@ button[disabled]:hover {
   box-shadow: none;
 }
 
+/* Two-column form layout for desktop */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Full-width elements like map and image upload */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Apply fadeIn animation to each form group within grid */
+.form-grid .form-group {
+  animation: fadeIn 0.5s var(--transition) backwards;
+}
+
+/* Responsive: stack columns on mobile */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 @keyframes fadeInDown {
   from {
     opacity: 0;

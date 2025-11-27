@@ -1,21 +1,21 @@
 <template>
   <div class="item-card" @click="$emit('click')">
-    <!-- <img
+    <img
       :src="
         item.image_path
           ? `http://127.0.0.1:8000/storage/${item.image_path}`
           : 'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
       "
       alt="Item Image"
-    /> -->
+    />
 
-    <img
+    <!-- <img
       :src="
         item.image_path ||
         'https://via.placeholder.com/400x250/cccccc/666666?text=No+Image+Available'
       "
       alt="Item Image"
-    />
+    /> -->
 
     <!-- <img
       :src="
@@ -68,8 +68,8 @@ export default {
 }
 
 .item-card:hover {
-  transform: translateY(-6px); /* Lift effect */
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px); /* smaller lift */
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
 }
 
 .item-card img {

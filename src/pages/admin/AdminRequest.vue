@@ -13,6 +13,7 @@
               <th>Requested By</th>
               <th>Contact</th>
               <th>Message</th>
+              <th>Attachment</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -24,23 +25,28 @@
               <td>{{ req.user.firstname }} {{ req.user.lastname }}</td>
               <td>{{ req.phone_number || "-" }}</td>
               <td>{{ req.message || "-" }}</td>
+              <td>
+                <a
+                  v-if="req.attachment_path"
+                  :href="`http://127.0.0.1:8000/storage/${req.attachment_path}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View
+                </a>
+                <span v-else>-</span>
+              </td>
               <td :class="statusClass(req.status)">{{ req.status }}</td>
               <td>
-                <button
-                  v-if="req.status && req.status.toLowerCase() === 'pending'"
-                  class="btn-approve"
-                  @click="approve(req.id)"
+                <select
+                  v-model="req.status"
+                  @change="updateStatus(req.id, req.status)"
                 >
-                  Approve
-                </button>
-                <button
-                  v-if="req.status && req.status.toLowerCase() === 'pending'"
-                  class="btn-reject"
-                  @click="reject(req.id)"
-                >
-                  Reject
-                </button>
-                <span v-else>—</span>
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Claimed">Claimed</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
               </td>
             </tr>
           </tbody>
@@ -72,7 +78,7 @@ export default {
     return {
       requests: [],
       nextPageUrl: null,
-      loaded: false, // Track if API finished loading
+      loaded: false,
     };
   },
   mounted() {
@@ -83,40 +89,22 @@ export default {
       try {
         const url = this.nextPageUrl || "/admin/request";
         const res = await axios.get(url);
-
-        // Merge new requests
         this.requests = [...this.requests, ...res.data.data.data];
         this.nextPageUrl = res.data.data.next_page_url;
       } catch (error) {
         console.error("Error loading requests:", error);
       } finally {
-        this.loaded = true; // API finished
+        this.loaded = true;
       }
     },
 
-    async approve(id) {
+    async updateStatus(id, status) {
       try {
-        await axios.patch(`/admin/request/${id}/approve`);
-        this.requests = this.requests.map((r) =>
-          r.id === id ? { ...r, status: "Approved" } : r
-        );
-        alert("Request approved");
+        await axios.patch(`/admin/request/${id}/status`, { status });
+        alert(`Request status updated to ${status}`);
       } catch (error) {
         console.error(error);
-        alert("Error approving request");
-      }
-    },
-
-    async reject(id) {
-      try {
-        await axios.patch(`/admin/request/${id}/reject`);
-        this.requests = this.requests.map((r) =>
-          r.id === id ? { ...r, status: "Rejected" } : r
-        );
-        alert("Request rejected");
-      } catch (error) {
-        console.error(error);
-        alert("Error rejecting request");
+        alert("Error updating status");
       }
     },
 
@@ -128,6 +116,8 @@ export default {
           return "status-approved";
         case "rejected":
           return "status-rejected";
+        case "claimed":
+          return "status-claimed";
         default:
           return "";
       }
@@ -136,7 +126,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .admin-page {
   font-family: "Inter", sans-serif;
@@ -144,7 +133,6 @@ export default {
   background: #f4f9f8;
   padding: 20px;
 }
-
 .title {
   font-size: 2rem;
   font-weight: 800;
@@ -153,68 +141,35 @@ export default {
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
 }
-
 .table-card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 6px 18px rgba(28, 200, 138, 0.08);
   overflow-x: auto;
 }
-
 .request-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
-
 .request-table thead {
   background: #1cc88a;
   color: white;
   text-transform: uppercase;
 }
-
 .request-table th,
 .request-table td {
   padding: 12px 15px;
   text-align: left;
 }
-
 .request-table tbody tr:nth-child(even) {
   background: #f9f9f9;
 }
-
 .request-table tbody tr:hover {
   background: #d1f2e0;
-  transition: background 0.3s ease;
+  transition: 0.3s;
 }
-
-.btn-approve,
-.btn-reject {
-  padding: 6px 12px;
-  font-size: 13px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 5px;
-  color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.btn-approve:hover,
-.btn-reject:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.btn-approve {
-  background-color: #27ae60;
-}
-.btn-reject {
-  background-color: #e74c3c;
-}
-
 .status-pending {
   color: #f6c23e;
   font-weight: 600;
@@ -227,29 +182,28 @@ export default {
   color: #e74a3b;
   font-weight: 600;
 }
-
+.status-claimed {
+  color: #6c5ce7;
+  font-weight: 600;
+}
 .request-table td:first-child,
 .request-table th:first-child {
   width: 60px;
   text-align: center;
 }
-
 .admin-content {
   padding-top: 10px;
 }
-
 .loading-text {
   color: #666;
   font-size: 1rem;
   margin-top: 20px;
   text-align: center;
 }
-
 .load-more {
   margin-top: 15px;
   text-align: center;
 }
-
 .load-more button {
   padding: 8px 16px;
   border: none;
@@ -260,8 +214,12 @@ export default {
   cursor: pointer;
   transition: 0.2s;
 }
-
 .load-more button:hover {
   background-color: #17a2b8;
+}
+select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 </style>

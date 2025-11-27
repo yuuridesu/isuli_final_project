@@ -67,9 +67,11 @@ export default {
       try {
         const response = await axios.get("/items");
         console.log("Fetched items:", response.data.data);
-        this.items = (response.data.data || []).filter(
-          (item) => item.status === "Approved"
-        );
+        this.items = response.data.data.data || [];
+
+        // this.items = (response.data.data.data || []).filter(
+        //   (item) => item.status === "Approved"
+        // );
       } catch (error) {
         console.error("Error fetching items:", error);
       }
