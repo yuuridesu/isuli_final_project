@@ -141,6 +141,15 @@ export default {
         return;
       }
 
+      // Confirmation dialog
+      const confirmed = confirm(
+        "Are you sure? All info will be saved atomically."
+      );
+      if (!confirmed) {
+        this.loading = false;
+        return;
+      }
+
       try {
         const formData = new FormData();
         formData.append("item_type", this.form.item_type);
@@ -150,7 +159,6 @@ export default {
         formData.append("location", this.form.location);
         formData.append("date_reported_item", this.form.date_reported_item);
 
-        // Always send coordinates
         formData.append("latitude", this.form.latitude);
         formData.append("longitude", this.form.longitude);
 
@@ -164,10 +172,12 @@ export default {
         this.$router.push("/user");
       } catch (error) {
         console.error("Error submitting item:", error);
+        alert("Failed to report item. Please try again.");
       } finally {
         this.loading = false;
       }
     },
+
     initMap() {
       // Initialize Leaflet map centered on ISU Echague or previously picked coords
       const initialLat = this.form.latitude || 16.72012;

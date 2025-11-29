@@ -98,15 +98,43 @@ export default {
       }
     },
 
+    // async updateStatus(id, status) {
+    //   try {
+    //     await axios.patch(`/admin/request/${id}/status`, { status });
+    //     alert(`Request status updated to ${status}`);
+    //   } catch (error) {
+    //     console.error(error);
+    //     alert("Error updating status");
+    //   }
+    // },
+
     async updateStatus(id, status) {
       try {
         await axios.patch(`/admin/request/${id}/status`, { status });
+        // Refetch the requests to make sure the table and user dashboard are in sync
+        this.requests = [];
+        await this.loadRequests();
         alert(`Request status updated to ${status}`);
       } catch (error) {
         console.error(error);
         alert("Error updating status");
       }
     },
+
+    //     async updateStatus(id, status) {
+    //   const index = this.requests.findIndex(r => r.id === id);
+    //   const oldStatus = this.requests[index].status;
+    //   this.requests[index].status = status; // optimistic update
+
+    //   try {
+    //     await axios.patch(`/admin/request/${id}/status`, { status });
+    //     alert(`Request status updated to ${status}`);
+    //   } catch (error) {
+    //     console.error(error);
+    //     this.requests[index].status = oldStatus; // rollback on failure
+    //     alert("Error updating status");
+    //   }
+    // }
 
     statusClass(status) {
       switch ((status || "").toLowerCase()) {

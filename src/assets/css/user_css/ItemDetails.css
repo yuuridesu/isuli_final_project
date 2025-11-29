@@ -227,6 +227,17 @@
   opacity: 0.7;
 }
 
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-buttons button {
+  flex: 1; /* makes both equal width */
+}
+
+
 
 /* Responsive */
 @media (max-width: 768px) {

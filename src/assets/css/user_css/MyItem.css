@@ -98,6 +98,15 @@
   max-width: 500px;
 }
 
+.no-items-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  min-height: 60vh;        /* adjust if needed */
+  width: 100%;
+  flex-direction: column;
+}
+
 .no-items::before {
   content: '';
   position: absolute;

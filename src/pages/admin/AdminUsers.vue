@@ -4,13 +4,14 @@
 
     <div class="admin-content">
       <!-- Search bar -->
-      <div class="search-bar">
+      <!-- Search bar -->
+      <div class="search-wrapper">
         <input
           type="text"
           v-model="searchQuery"
           placeholder="Search users..."
+          class="search-bar"
         />
-        <!-- <i class="fas fa-search"></i> -->
       </div>
 
       <!-- Table card wrapper -->
@@ -23,6 +24,8 @@
               <th>LastName</th>
               <th>Student Id</th>
               <th>Email</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -32,9 +35,45 @@
               <td>{{ user.lastname }}</td>
               <td>{{ user.student_id }}</td>
               <td>{{ user.email }}</td>
+              <td>
+                <button @click="openEditModal(user)" class="edit-btn">
+                  Edit
+                </button>
+              </td>
+              <td>
+                <button @click="deleteUser(user.id)" class="delete-btn">
+                  Delete
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
+
+        <!-- Edit User Modal -->
+        <div v-if="editingUser" class="modal-overlay">
+          <div class="modal">
+            <h2>Edit User</h2>
+
+            <label>First Name</label>
+            <input v-model="editingUser.firstname" />
+
+            <label>Last Name</label>
+            <input v-model="editingUser.lastname" />
+
+            <label>Student ID</label>
+            <input v-model="editingUser.student_id" />
+
+            <label>Email</label>
+            <input v-model="editingUser.email" />
+
+            <div class="modal-actions">
+              <button @click="saveEdit">Save</button>
+              <button @click="editingUser = null" class="cancel-btn">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <p v-else class="loading-text">No users found.</p>
@@ -50,6 +89,7 @@ export default {
   data() {
     return {
       users: [],
+      editingUser: null,
       searchQuery: "", // for search functionality
     };
   },
@@ -64,6 +104,44 @@ export default {
       } catch (error) {
         console.error(error);
         alert("Error fetching users");
+      }
+    },
+
+    // Open modal with selected user
+    openEditModal(user) {
+      this.editingUser = { ...user }; // clone so original data stays
+    },
+
+    // Save edited user
+    async saveEdit() {
+      try {
+        await axios.put(`/admin/users/${this.editingUser.id}`, {
+          firstname: this.editingUser.firstname,
+          lastname: this.editingUser.lastname,
+          student_id: this.editingUser.student_id,
+          email: this.editingUser.email,
+          // don't send 'age'
+        });
+
+        const index = this.users.findIndex((u) => u.id === this.editingUser.id);
+        this.users[index] = { ...this.editingUser };
+        this.editingUser = null;
+        alert("User updated successfully!");
+      } catch (error) {
+        console.error(error);
+        alert("Failed to update user.");
+      }
+    },
+
+    async deleteUser(id) {
+      if (!confirm("Are you sure you want to delete this user?")) return;
+      try {
+        await axios.delete(`/admin/users/${id}`);
+        this.users = this.users.filter((u) => u.id !== id);
+        alert("User deleted successfully!");
+      } catch (error) {
+        console.error(error);
+        alert("Failed to delete user ");
       }
     },
   },
@@ -97,34 +175,31 @@ export default {
   -webkit-text-fill-color: transparent;
   margin-bottom: 30px;
 }
-
-/* Search bar */
-.search-bar {
-  position: relative;
-  margin-bottom: 20px;
-  max-width: 400px;
-}
-
-.search-bar input {
+/* Search bar (matches User Dashboard) */
+.search-wrapper {
   width: 100%;
-  padding: 10px 35px 10px 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  max-width: 400px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(28, 200, 138, 0.2);
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 2px 8px rgba(28, 200, 138, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-bar:focus {
   outline: none;
-  transition: border 0.3s ease;
-}
-
-.search-bar input:focus {
   border-color: #1cc88a;
-}
-
-.search-bar i {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
+  box-shadow: 0 0 8px rgba(28, 200, 138, 0.2),
+    0 8px 24px rgba(28, 200, 138, 0.15);
 }
 
 /* Table card wrapper */
@@ -171,6 +246,61 @@ export default {
 .user-table th:first-child {
   width: 60px;
   text-align: center;
+}
+
+.edit-btn {
+  background: #ffe96a;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #e84a5f;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 400px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-actions .cancel-btn {
+  background: #e84a5f;
+  color: white;
 }
 
 /* Admin content padding */

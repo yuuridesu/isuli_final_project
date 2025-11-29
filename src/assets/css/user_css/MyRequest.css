@@ -88,6 +88,14 @@
   height: 3px;
   background: linear-gradient(90deg, var(--green-main), var(--yellow-accent));
 }
+.no-requests-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  min-height: 60vh;        /* adjust as needed */
+  width: 100%;
+  flex-direction: column;
+}
 
 .no-requests p {
   color: var(--text-dark);

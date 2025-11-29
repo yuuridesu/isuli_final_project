@@ -6,8 +6,10 @@
     <div v-if="loading" class="loading">Loading your requests...</div>
 
     <div v-else>
-      <div v-if="requests.length === 0" class="no-requests">
-        <p>You haven’t requested any items yet.</p>
+      <div v-if="requests.length === 0" class="no-requests-wrapper">
+        <div class="no-requests">
+          <p>You haven’t requested any items yet.</p>
+        </div>
       </div>
 
       <div class="request-grid" v-else>
@@ -16,7 +18,6 @@
             :src="`http://192.168.254.105:8000/storage/${req.item.image_path}`"
             alt="Item Image"
           />
-
           <h3>{{ req.item.item_name }}</h3>
           <p>{{ req.message || "—" }}</p>
           <p>

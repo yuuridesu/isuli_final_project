@@ -15,14 +15,24 @@
 
     <SearchBar @search="handleSearch"> </SearchBar>
 
-    <div class="item-grid">
-      <ItemCard
-        v-for="item in filteredItems"
-        :key="item.id"
-        :item="item"
-        @click="$router.push(`user/items/${item.id}`)"
-      >
-      </ItemCard>
+    <div v-if="loading" class="loading">Loading your items...</div>
+
+    <div v-else>
+      <div v-if="items.length === 0" class="no-items-wrapper">
+        <div class="no-items">
+          <h2>No Items Posted Yet</h2>
+          <p>Items you report will appear here once approved.</p>
+        </div>
+      </div>
+
+      <div class="item-grid" v-else>
+        <ItemCard
+          v-for="item in filteredItems"
+          :key="item.id"
+          :item="item"
+          @click="$router.push(`user/items/${item.id}`)"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -6,15 +6,16 @@
 
     <!-- Loading state -->
     <div v-if="loading" class="loading">Loading your items...</div>
-
     <div v-else>
       <!-- No items -->
-      <div v-if="items.length === 0" class="no-items">
-        <p>You haven’t posted any items yet.</p>
+      <div v-if="items.length === 0" class="no-items-wrapper">
+        <div class="no-items">
+          <p>You haven’t posted any items yet.</p>
+        </div>
       </div>
 
       <!-- Items grid -->
-      <div class="item-grid">
+      <div class="item-grid" v-else>
         <div v-for="item in items" :key="item.id" class="item-card">
           <img
             :src="
@@ -118,7 +119,7 @@ export default {
       const itemIndex = this.items.findIndex((item) => item.id === id);
 
       try {
-        await axios.delete(`/api/items/${id}`);
+        await axios.delete(`/items/${id}`);
         this.items.splice(itemIndex, 1);
         alert("Item deleted successfully!");
       } catch (error) {
